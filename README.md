@@ -185,6 +185,7 @@ Status <b>404</b> (Not found) - user not found
     page: number
     limit: number
   }
+```
   
 ##### Headers
 - Authorization: Bearer
@@ -202,8 +203,8 @@ Status <b>200</b>
       email: string
       avatarId: string
     }[]
+    amount: number
   }
-  amount: number
 ```
   
 Status <b>401</b> (Unauthorized) - access token not valid
