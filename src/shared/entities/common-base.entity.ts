@@ -6,8 +6,8 @@ import {
 } from 'typeorm'
 
 export class CommonBaseEntity {
-    @PrimaryGeneratedColumn('increment')
-    id: number
+    @PrimaryGeneratedColumn('uuid')
+    id: string
 
     @CreateDateColumn({ name: 'created_at' })
     createdAt: Date
