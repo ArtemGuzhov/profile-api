@@ -335,9 +335,9 @@ Status <b>400</b> (Bad request) - invalid data or a user with this mail already 
 
 ```
   {
-    name: string
-    nickname: string
-    description: string
+    name?: string
+    nickname?: string
+    description?: string
   }
 ```
 
