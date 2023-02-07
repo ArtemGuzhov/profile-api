@@ -177,6 +177,14 @@ Status <b>404</b> (Not found) - user not found
 
 <details>
 <summary> <code>GET</code> <code> <b>/v1/users</b> </code> <code>(get users list)</code> </summary>
+
+##### Parametrs 
+  
+```
+  {
+    page: number
+    limit: number
+  }
   
 ##### Headers
 - Authorization: Bearer
@@ -187,11 +195,15 @@ Status <b>200</b>
 
 ```
   {
-    name: string
-    nickname: string
-    email: string
-    avatar: string
-  }[]
+    users: {
+      id: string
+      name: string
+      nickname: string
+      email: string
+      avatarId: string
+    }[]
+  }
+  amount: number
 ```
   
 Status <b>401</b> (Unauthorized) - access token not valid
@@ -206,7 +218,7 @@ Status <b>401</b> (Unauthorized) - access token not valid
 ##### Example cURL
 
 > ```javascript
->  curl --location --request GET 'http://localhost:3000/v1/users' --header 'Authorization: Bearer access-token'
+>  curl --location --request GET 'http://localhost:3000/v1/users?page=1&limit=20' --header 'Authorization: Bearer access-token'
 > ```
 
 </details>
@@ -225,10 +237,12 @@ Status <b>401</b> (Unauthorized) - access token not valid
 
 ```
   {
+    id: string
     name: string
     nickname: string
     email: string
-    avatar: string
+    avatarId: string
+    headerId: string
   }
 ```
   
@@ -270,9 +284,12 @@ Status <b>404</b> (Not found) - user not found
 
 ```
   {
+    id: string
     name: string
+    nickname: string
     email: string
-    password: string
+    avatarId: string
+    headerId: string
   }
 ```
 
@@ -371,14 +388,10 @@ Status <b>404</b> (Not found) - user not found
 
 </details>
 
-------------------------------------------------------------------------------------------
-
-#### Users media
-
 <!-- Update avatar -->
 
 <details>
-<summary> <code>POST</code> <code> <b>/v1/users/media/update/avatar</b> </code> <code>(update avatar image)</code> </summary>
+<summary> <code>POST</code> <code> <b>/v1/users/update/avatar</b> </code> <code>(update avatar image)</code> </summary>
 
 ##### Headers
 - Authorization: Bearer
@@ -424,7 +437,7 @@ Status <b>404</b> (Not found) - user not found
 ##### Example cURL
 
 > ```javascript
-> curl --location --request POST 'http://localhost:3000/v1/users/media/update/avatar' --header 'Authorization: Bearer access-token' --form 'avatar=@"image.jpg"'
+> curl --location --request POST 'http://localhost:3000/v1/users/update/avatar' --header 'Authorization: Bearer access-token' --form 'avatar=@"image.jpg"'
 > ```
 
 </details>
@@ -432,7 +445,7 @@ Status <b>404</b> (Not found) - user not found
 <!-- Update header -->
 
 <details>
-<summary> <code>POST</code> <code> <b>/v1/users/media/update/header</b> </code> <code>(update header image)</code> </summary>
+<summary> <code>POST</code> <code> <b>/v1/users/update/header</b> </code> <code>(update header image)</code> </summary>
 
 ##### Headers
 - Authorization: Bearer
@@ -478,7 +491,7 @@ Status <b>404</b> (Not found) - user not found
 ##### Example cURL
 
 > ```javascript
-> curl --location --request POST 'http://localhost:3000/v1/users/media/update/header' --header 'Authorization: Bearer access-token' --form 'avatar=@"image.jpg"'
+> curl --location --request POST 'http://localhost:3000/v1/usersupdate/header' --header 'Authorization: Bearer access-token' --form 'avatar=@"image.jpg"'
 > ```
 
 </details>
