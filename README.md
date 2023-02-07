@@ -285,12 +285,9 @@ Status <b>404</b> (Not found) - user not found
 
 ```
   {
-    id: string
     name: string
-    nickname: string
     email: string
-    avatarId: string
-    headerId: string
+    password: string
   }
 ```
 
