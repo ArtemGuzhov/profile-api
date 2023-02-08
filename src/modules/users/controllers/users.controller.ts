@@ -25,9 +25,9 @@ export class UsersControllerV1 {
     async uploadFile(
         @UploadedFile() file: Express.Multer.File,
         @Body() body: { type: FileTypesEnum },
-    ): Promise<void> {
-        await this._usersMediaService.saveFile(
-            'ee47883a-306e-4e5a-8d9a-ded90894e099',
+    ): Promise<any> {
+        return await this._usersMediaService.saveFile(
+            'b3ed8b99-3508-4ec7-a0c9-70ecd67db9d3',
             file,
             body.type,
         )

@@ -1,5 +1,6 @@
 import { Column, Entity, Index } from 'typeorm'
 import { CommonBaseEntity } from '../../../shared/entities/common-base.entity'
+import { ImgFile } from '../services/interfaces/img-file.interface'
 
 @Entity('users')
 export class UsersEntity extends CommonBaseEntity {
@@ -20,11 +21,11 @@ export class UsersEntity extends CommonBaseEntity {
     @Column({ type: 'text', nullable: true })
     description: string | null
 
-    @Column({ name: 'avatar_id', type: 'text', nullable: true, unique: true })
-    avatarId: string | null
+    @Column({ name: 'avatar', type: 'jsonb', nullable: true })
+    avatar: ImgFile | null
 
-    @Column({ name: 'header_id', type: 'text', nullable: true, unique: true })
-    headerId: string | null
+    @Column({ name: 'header', type: 'jsonb', nullable: true })
+    header: ImgFile | null
 
     @Column({ name: 'refresh_token', type: 'text', nullable: true })
     refreshToken: string | null

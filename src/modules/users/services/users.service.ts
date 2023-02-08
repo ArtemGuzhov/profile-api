@@ -12,11 +12,11 @@ import { UsersResponse } from './interfaces/users-response.interface'
 import { User } from './interfaces/user.interface'
 import { CreateUser } from './interfaces/create-user.interface'
 import { createHash } from 'crypto'
-import { ErrorsMessagesEnum } from 'src/shared/enums/error-messages.enum'
+import { ErrorsMessagesEnum } from '../../../shared/enums/error-messages.enum'
 import { FindOptions } from './interfaces/find-options.interface'
 import { FindOptionsEnum } from './enums/find-options.enum'
 import { promises } from 'fs'
-import { environment } from 'src/environment'
+import { environment } from '../../../environment'
 
 @Injectable()
 export class UsersService {
@@ -49,12 +49,12 @@ export class UsersService {
         const amount = usersCount < 0 ? 0 : usersCount
 
         const filteredUsers = users.map(
-            ({ id, name, nickname, email, avatarId }) => ({
+            ({ id, name, nickname, email, avatar }) => ({
                 id,
                 name,
                 nickname,
                 email,
-                avatarId,
+                avatar,
             }),
         )
 
@@ -78,15 +78,15 @@ export class UsersService {
             throw new NotFoundException(ErrorsMessagesEnum.USER_NOT_FOUND)
         }
 
-        const { id, name, nickname, email, avatarId, headerId } = user
+        const { id, name, nickname, email, avatar, header } = user
 
         return {
             id,
             name,
             nickname,
             email,
-            avatarId,
-            headerId,
+            avatar,
+            header,
         }
     }
 
