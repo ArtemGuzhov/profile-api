@@ -35,7 +35,6 @@ export class UsersService {
      * @param limit
      * @returns UsersResponse
      *
-     * @devNotes repl: await get(UsersService).getUsers(1, 10)
      */
     async getUsers(page: number, limit: number): Promise<UsersResponse> {
         const skipCount = page * limit
@@ -45,7 +44,9 @@ export class UsersService {
             skip: skipCount,
         })
 
-        const usersCount = (await this._usersRepository.count()) - skipCount
+        const usersCount =
+            (await this._usersRepository.count()) -
+            (skipCount === 1 ? 0 : skipCount)
         const amount = usersCount < 0 ? 0 : usersCount
 
         const filteredUsers = users.map(
@@ -69,7 +70,6 @@ export class UsersService {
      * @param userNickname
      * @returns User
      *
-     * @devNotes repl: await get(UsersService).getUserByNickname('nickname')
      */
     async getUserByNickname(userNickname: string): Promise<User> {
         const user = await this._find({ nickname: userNickname })
@@ -95,7 +95,6 @@ export class UsersService {
      * @param userId
      * @returns UsersEntity
      *
-     * @devNotes repl: await get(UsersService).getUserById('id')
      */
     async getUserById(userId: string): Promise<UsersEntity> {
         const user = await this._find({ id: userId })
@@ -113,9 +112,8 @@ export class UsersService {
      * @param data
      * @returns boolean
      *
-     * @devNotes repl: await get(UsersService).createUser({name: 'email', email: 'email@g.com', password: 'password'})
      */
-    async createUser(data: CreateUser): Promise<boolean> {
+    async createUser(data: CreateUser): Promise<void> {
         const user = await this._find({ email: data.email })
 
         if (user) {
@@ -136,8 +134,6 @@ export class UsersService {
         })
         await this._usersRepository.save(newUser)
         await promises.mkdir(`${environment.paths.media}/${newUser.id}`)
-
-        return true
     }
 
     /**
@@ -146,7 +142,6 @@ export class UsersService {
      * @param data
      * @returns UpdateUser
      *
-     * @devNotes repl: await get(UsersService).updateUser({nickname: 'nickname', name: 'name', description: 'desc'})
      */
     async updateUser(userId: string, data: UpdateUser): Promise<UpdateUser> {
         const user = await this._find({ id: userId })

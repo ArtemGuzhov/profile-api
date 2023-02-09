@@ -3,10 +3,7 @@ import {
     InternalServerErrorException,
     NotFoundException,
 } from '@nestjs/common'
-import { InjectEntityManager } from '@nestjs/typeorm'
-import { EntityManager, Repository } from 'typeorm'
 import { v4 } from 'uuid'
-import { UsersEntity } from '../entities/users.entity'
 import { FileTypesEnum } from './enums/file-types.enum'
 import { UsersService } from './users.service'
 import { promises } from 'fs'
@@ -19,17 +16,18 @@ import { ImgFile } from './interfaces/img-file.interface'
 export class UsersMediaService {
     private readonly _logger = new Logardian()
     private readonly _mediaPath: string
-    private readonly _usersRepository: Repository<UsersEntity>
 
-    constructor(
-        @InjectEntityManager()
-        private readonly _entityManager: EntityManager,
-        private readonly _usersService: UsersService,
-    ) {
-        this._usersRepository = this._entityManager.getRepository(UsersEntity)
+    constructor(private readonly _usersService: UsersService) {
         this._mediaPath = environment.paths.media
     }
 
+    /**
+     *
+     * @param userId
+     * @param file
+     * @param type
+     * @returns ImgFile
+     */
     async saveFile(
         userId: string,
         file: Express.Multer.File,
@@ -49,7 +47,7 @@ export class UsersMediaService {
                 return avatar
             case FileTypesEnum.HEADER:
                 if (user.header !== null) {
-                    const { id: fileId, format } = user.avatar
+                    const { id: fileId, format } = user.header
                     await this._delete(userId, type, fileId, format)
                 }
 
@@ -83,16 +81,16 @@ export class UsersMediaService {
 
             switch (type) {
                 case FileTypesEnum.AVATAR:
-                    await this._usersRepository.save({
-                        id: userId,
+                    await this._usersService.updateUser(userId, {
                         avatar: fileData,
                     })
+
                     return fileData
                 case FileTypesEnum.HEADER:
-                    await this._usersRepository.save({
-                        id: userId,
+                    await this._usersService.updateUser(userId, {
                         header: fileData,
                     })
+
                     return fileData
                 default:
                     throw new NotFoundException(
@@ -121,14 +119,12 @@ export class UsersMediaService {
 
             switch (type) {
                 case FileTypesEnum.AVATAR:
-                    await this._usersRepository.save({
-                        id: userId,
+                    await this._usersService.updateUser(userId, {
                         avatar: null,
                     })
                     break
                 case FileTypesEnum.HEADER:
-                    await this._usersRepository.save({
-                        id: userId,
+                    await this._usersService.updateUser(userId, {
                         header: null,
                     })
                     break
