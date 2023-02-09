@@ -1,17 +1,12 @@
 import { Transform } from 'class-transformer'
-import { IsEmail, Matches, IsDefined, IsNotEmpty } from 'class-validator'
+import { IsDefined, IsEmail, Matches } from 'class-validator'
 import { PasswordRegExp } from '../../../../shared/regexps/password.regexp'
 
-export class RegisterUserDTO {
+export class AuthDTO {
     @Transform(({ value }) => value.toLowerCase())
     @IsDefined()
     @IsEmail()
     email: string
-
-    @Transform(({ value }) => value.toLowerCase())
-    @IsDefined()
-    @IsNotEmpty({ message: 'Name must not be empty' })
-    name: string
 
     @IsDefined()
     @Matches(PasswordRegExp, {

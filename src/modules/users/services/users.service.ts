@@ -17,6 +17,7 @@ import { FindOptions } from './interfaces/find-options.interface'
 import { FindOptionsEnum } from './enums/find-options.enum'
 import { promises } from 'fs'
 import { environment } from '../../../environment'
+import { getHash } from '../../../shared/helpers/get-hash.helper'
 
 @Injectable()
 export class UsersService {
@@ -41,7 +42,7 @@ export class UsersService {
 
         const users = await this._usersRepository.find({
             order: { id: 'ASC' },
-            skip: skipCount,
+            skip: skipCount === 1 ? 0 : skipCount,
         })
 
         const usersCount =
@@ -92,6 +93,22 @@ export class UsersService {
 
     /**
      *
+     * @param userNickname
+     * @returns User
+     *
+     */
+    async getUserByEmail(userEmail: string): Promise<UsersEntity> {
+        const user = await this._find({ email: userEmail })
+
+        if (!user) {
+            throw new NotFoundException(ErrorsMessagesEnum.USER_NOT_FOUND)
+        }
+
+        return user
+    }
+
+    /**
+     *
      * @param userId
      * @returns UsersEntity
      *
@@ -123,9 +140,7 @@ export class UsersService {
         }
 
         const newNickname = v4()
-        const passHash = createHash('sha256')
-            .update(data.password)
-            .digest('base64')
+        const passHash = await getHash(data.password)
 
         const newUser = this._usersRepository.create({
             ...data,

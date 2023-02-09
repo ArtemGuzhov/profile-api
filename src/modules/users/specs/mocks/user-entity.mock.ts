@@ -6,7 +6,8 @@ export const userEntityMock: UsersEntity = {
     email: 'email@g.com',
     nickname: 'nickname',
     description: 'desc',
-    password: '',
+    password: 'WYgQjeal8EMoTDazqReciPRnKgvIQO+O77Gww3ruKPU=',
+    refreshToken: '4erp43O6YqgM29RCL8ACVTRHrrOP242/URpS0+jF5Bc=',
     avatar: {
         id: '1',
         format: 'jpg',
@@ -18,5 +19,4 @@ export const userEntityMock: UsersEntity = {
     createdAt: new Date(),
     updatedAt: new Date(),
     deletedAt: null,
-    refreshToken: null,
 }

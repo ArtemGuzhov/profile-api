@@ -11,6 +11,8 @@ import {
     UseInterceptors,
 } from '@nestjs/common'
 import { FileInterceptor } from '@nestjs/platform-express'
+import { GetUserId } from '../../../shared/decorators/get-user-id.decorator'
+import { IsPublic } from '../../../shared/decorators/is-public.decorator'
 import { ImgFile } from '../services/interfaces/img-file.interface'
 import { UpdateUser } from '../services/interfaces/update-user.interface'
 import { User } from '../services/interfaces/user.interface'
@@ -46,6 +48,7 @@ export class UsersControllerV1 {
         return await this._usersService.getUserByNickname(nickname)
     }
 
+    @IsPublic()
     @HttpCode(HttpStatus.CREATED)
     @Post('register')
     async registerUser(@Body() body: RegisterUserDTO) {
@@ -53,16 +56,20 @@ export class UsersControllerV1 {
     }
 
     @Post('update')
-    async updateUser(@Body() body: UpdateUserDTO): Promise<UpdateUser> {
-        return await this._usersService.updateUser('userId', body)
+    async updateUser(
+        @GetUserId() userId: string,
+        @Body() body: UpdateUserDTO,
+    ): Promise<UpdateUser> {
+        return await this._usersService.updateUser(userId, body)
     }
 
     @Post('media/upload')
     @UseInterceptors(FileInterceptor('file'))
     async uploadFile(
+        @GetUserId() userId: string,
         @UploadedFile() file: Express.Multer.File,
         @Body() body: UploadDTO,
     ): Promise<ImgFile> {
-        return await this._usersMediaService.saveFile('userId', file, body.type)
+        return await this._usersMediaService.saveFile(userId, file, body.type)
     }
 }

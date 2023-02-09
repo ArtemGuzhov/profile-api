@@ -110,19 +110,6 @@ describe('UsersService', () => {
             password: 'pass',
         }
 
-        // it('should create new user', async () => {
-        // jest.spyOn(
-        //     service['_usersRepository'],
-        //     'findOne',
-        // ).mockResolvedValue(undefined)
-
-        //     await service.createUser(userBody)
-
-        //     expect(service['_usersRepository'].findOne).toHaveBeenCalledTimes(1)
-        //     expect(service['_usersRepository'].create).toHaveBeenCalledTimes(1)
-        //     expect(service['_usersRepository'].save).toHaveBeenCalledTimes(1)
-        // })
-
         it('throw USER_WITH_THIS_EMAIL_ALREADY_EXISTS error', async () => {
             jest.spyOn(
                 service['_usersRepository'],
@@ -179,37 +166,5 @@ describe('UsersService', () => {
             )
             expect(service['_usersRepository'].findOne).toHaveBeenCalledTimes(1)
         })
-
-        // it('throw NOT_A_STRONG_PASSWORD error', async () => {
-        //     expect(service.create({ ...userPayloadMock, password: '' })).rejects.toThrow('NOT_A_STRONG_PASSWORD')
-        // })
-        // it('throw INCORRECT_LOGIN error', async () => {
-        //     expect(service.create({ ...userPayloadMock, login: '' })).rejects.toThrow('INCORRECT_LOGIN')
-        // })
-        // it('throw INCORRECT_EMAIL error', async () => {
-        //     expect(service.create({ ...userPayloadMock, email: 'email' })).rejects.toThrow('INCORRECT_EMAIL')
-        // })
-        // it('throw USER_WITH_THIS_EMAIL_ALREADY_EXIST error', async () => {
-        //     jest.spyOn(service as any, '_isExistEmail').mockResolvedValue(true)
-        //     expect(service.create(userPayloadMock)).rejects.toThrow('USER_WITH_THIS_EMAIL_ALREADY_EXIST')
-        // })
-        // it('throw USER_WITH_THIS_EMAIL_ALREADY_EXIST error', async () => {
-        //     jest.spyOn(service as any, '_isExistEmail').mockResolvedValue(false)
-        //     jest.spyOn(service as any, '_isExistLogin').mockResolvedValue(true)
-        //     expect(service.create(userPayloadMock)).rejects.toThrow('USER_WITH_THIS_LOGIN_ALREADY_EXIST')
-        // })
-        // it('should return created user', async () => {
-        //     jest.spyOn(service as any, '_isExistEmail').mockResolvedValue(false)
-        //     jest.spyOn(service as any, '_isExistLogin').mockResolvedValue(false)
-        //     jest.spyOn(service['_usersRepository'], 'create').mockReturnValue(userEntityMock)
-        //     jest.spyOn(service['_usersRepository'], 'save').mockImplementation()
-        //     const user = await service.create(userPayloadMock)
-        //     const { id, email, login } = userMappedMock
-        //     expect(service['_isExistEmail']).toHaveBeenCalledTimes(1)
-        //     expect(service['_isExistLogin']).toHaveBeenCalledTimes(1)
-        //     expect(service['_usersRepository'].create).toHaveBeenCalledTimes(1)
-        //     expect(service['_usersRepository'].save).toHaveBeenCalledTimes(1)
-        //     expect(user).toEqual({ id, email, login })
-        // })
     })
 })
