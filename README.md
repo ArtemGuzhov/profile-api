@@ -1,4 +1,67 @@
-## Profile in Yoldi REST API docs
+# Setup
+
+There are two ways to start up the app: docker or local
+
+## Using docker
+
+Create **.env** file in **app dir**:
+
+```bash
+cp .env.example .env
+```
+
+Set env variables:
+
+```bash
+nano .env
+```
+
+Launch **docker-compose** from **./docker** for start app, postgres, adminer services:
+
+```bash
+yarn run docker:up
+```
+
+## Run Locally
+
+Set node version:
+
+```bash
+nvm use
+```
+
+Install dependencies:
+
+```bash
+yarn
+```
+
+Create **.env** file in **app dir**:
+
+```bash
+cp .env.example .env
+```
+
+Set env variables:
+
+```bash
+nano .env
+```
+
+Launch **docker-compose** from **./docker** for start postgres, adminer services:
+
+```bash
+yarn run docker:up postgres adminer
+```
+
+Run service:
+
+```bash
+yarn run start
+```
+
+
+# Profile in Yoldi REST API docs
 
 #### Authorization
 
@@ -61,31 +124,15 @@ Status <b>401</b> (Unauthorized) - invalid input data
 <!-- Logout -->
 
 <details>
-<summary> <code>POST</code> <code> <b>/v1/auth/logout</b> </code> <code>(logout from system)</code> </summary>
+<summary> <code>GET</code> <code> <b>/v1/auth/logout</b> </code> <code>(logout from system)</code> </summary>
 
 ##### Headers
 - Authorization: Bearer
 - Content-Type: application/json
-  
-##### Body
-
-```
-  {
-    refreshToken: string
-    accessToken: string
-  }
-```
 
 ##### Responses
 
 Status <b>200</b> (Ok)
-
-```
-  {
-    statusCode: number
-    message: string
-  }
-```
   
 Status <b>401</b> (Unauthorized) - access token not valid
 
@@ -110,16 +157,8 @@ Status <b>401</b> (Unauthorized) - access token not valid
 <summary> <code>POST</code> <code> <b>/v1/auth/refresh</b> </code> <code>(update access user data)</code> </summary>
 
 ##### Headers
-- Authorization: Bearer
+- Authorization: Bearer (Refresh Token)
 - Content-Type: application/json  
-  
-##### Body
-
-```
-  {
-    refreshToken: string
-  }
-```
 
 ##### Responses
 
@@ -294,13 +333,6 @@ Status <b>404</b> (Not found) - user not found
 ##### Responses
 
 Status <b>201</b> (Created)
-
-```
-  {
-    statusCode: number
-    message: string
-  }
-```
   
 Status <b>400</b> (Bad request) - invalid data or a user with this mail already exists
 
@@ -389,7 +421,7 @@ Status <b>404</b> (Not found) - user not found
 <!-- Update avatar -->
 
 <details>
-<summary> <code>POST</code> <code> <b>/v1/users/update/avatar</b> </code> <code>(update avatar image)</code> </summary>
+<summary> <code>POST</code> <code> <b>/v1/users/media/upload</b> </code> <code>(update avatar image)</code> </summary>
 
 ##### Headers
 - Authorization: Bearer
@@ -399,7 +431,8 @@ Status <b>404</b> (Not found) - user not found
 
 ```
   {
-    avatar: file
+    file: file
+    type: string
   }
 ```
 
@@ -409,8 +442,8 @@ Status <b>200</b> (Ok)
 
 ```
   {
-    statusCode: number
-    message: string
+    id: string
+    format: string
   }
 ```
   
@@ -435,61 +468,7 @@ Status <b>404</b> (Not found) - user not found
 ##### Example cURL
 
 > ```javascript
-> curl --location --request POST 'http://localhost:3000/v1/users/update/avatar' --header 'Authorization: Bearer access-token' --form 'avatar=@"image.jpg"'
-> ```
-
-</details>
-
-<!-- Update header -->
-
-<details>
-<summary> <code>POST</code> <code> <b>/v1/users/update/header</b> </code> <code>(update header image)</code> </summary>
-
-##### Headers
-- Authorization: Bearer
-- Content-Type: application/json  
-  
-##### Form
-
-```
-  {
-    header: file
-  }
-```
-
-##### Responses
-
-Status <b>200</b> (Ok) 
-
-```
-  {
-    statusCode: number
-    message: string
-  }
-```
-  
-Status <b>401</b> (Unauthorized) - access token not valid  
-
-```
-  {
-    statusCode: number
-    message: string
-  }
-```
-  
-Status <b>404</b> (Not found) - user not found   
-
-```
-  {
-    statusCode: number
-    message: string
-  }
-```
-
-##### Example cURL
-
-> ```javascript
-> curl --location --request POST 'http://localhost:3000/v1/usersupdate/header' --header 'Authorization: Bearer access-token' --form 'avatar=@"image.jpg"'
+> curl --location --request POST 'http://localhost:3000/v1/users/media/upload' --header 'Authorization: Bearer access-token' --form 'type="header"' --form 'avatar=@"image.jpg"'
 > ```
 
 </details>
