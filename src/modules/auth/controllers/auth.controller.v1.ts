@@ -11,6 +11,7 @@ import { GetUserId } from '../../../shared/decorators/get-user-id.decorator'
 import { IsPublic } from '../../../shared/decorators/is-public.decorator'
 import { RefreshTokenGuard } from '../../../shared/guards/refresh-token.guard'
 import { AuthService } from '../services/auth.service'
+import { AuthResponse } from '../services/interfaces/auth-response.interface'
 import { Tokens } from '../services/interfaces/tokens.interface'
 import { JwtTokensService } from '../services/jwt-tokens.service'
 import { AuthDTO } from './dtos/auth.dto'
@@ -28,7 +29,7 @@ export class AuthControllerV1 {
 
     @IsPublic()
     @Post()
-    async auth(@Body() body: AuthDTO): Promise<Tokens> {
+    async auth(@Body() body: AuthDTO): Promise<AuthResponse> {
         const { email, password } = body
 
         return await this._authService.auth(email, password)
@@ -45,7 +46,7 @@ export class AuthControllerV1 {
     refreshTokens(
         @GetUserId() userId: string,
         @GetRefreshToken('refreshToken') refreshToken: string,
-    ): Promise<Tokens> {
+    ): Promise<AuthResponse> {
         return this._jwtTokensService.refreshTokens(userId, refreshToken)
     }
 }

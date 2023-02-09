@@ -5,6 +5,7 @@ import { ErrorsMessagesEnum } from '../../../shared/enums/error-messages.enum'
 import { compareHashes } from '../../../shared/helpers/compare-hashes.helper'
 import { getHash } from '../../../shared/helpers/get-hash.helper'
 import { UsersService } from '../../users/services/users.service'
+import { AuthResponse } from './interfaces/auth-response.interface'
 import { JwtPayload } from './interfaces/jwt-payload.interface'
 import { Tokens } from './interfaces/tokens.interface'
 
@@ -21,21 +22,29 @@ export class JwtTokensService {
      * @param refreshToken
      * @returns Tokens
      */
-    async refreshTokens(id: string, refreshToken: string): Promise<Tokens> {
-        const user = await this._usersService.getUserById(id)
+    async refreshTokens(
+        userId: string,
+        refreshToken: string,
+    ): Promise<AuthResponse> {
+        const user = await this._usersService.getUserById(userId)
 
         if (!user.refreshToken) {
             throw new ForbiddenException(ErrorsMessagesEnum.FORBIDDEN)
         }
+
+        const { id, name, nickname, email, avatar, header } = user
 
         const isMatch = await compareHashes(refreshToken, user.refreshToken)
 
         if (!isMatch) throw new ForbiddenException(ErrorsMessagesEnum.FORBIDDEN)
 
         const tokens = await this.getTokens(user.id)
-        await this.updateRefreshTokenHash(id, tokens.refreshToken)
+        await this.updateRefreshTokenHash(userId, tokens.refreshToken)
 
-        return tokens
+        return {
+            user: {id, name, nickname, email, avatar, header},
+            tokens,
+        }
     }
 
     /**
