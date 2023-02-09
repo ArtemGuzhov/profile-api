@@ -23,4 +23,7 @@ export const environment = {
         username: env.get('PSQL_USERNAME').required().asString(),
         password: env.get('PSQL_PASSWORD').required().asString(),
     },
+    paths: {
+        media: env.get('MEDIA_PATH').required().asString(),
+    },
 }

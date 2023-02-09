@@ -2,7 +2,7 @@ import {
     TypeOrmModuleAsyncOptions,
     TypeOrmModuleOptions,
 } from '@nestjs/typeorm'
-import { environment } from 'src/environment'
+import { environment } from '../environment'
 
 export const typeOrmConfig: TypeOrmModuleAsyncOptions = {
     useFactory: (): TypeOrmModuleOptions => {

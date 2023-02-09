@@ -2,6 +2,7 @@
 /dist
 /node_modules
 /runtime
+/media
 
 # Logs
 logs
