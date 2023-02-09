@@ -35,7 +35,6 @@ export class UsersService {
      * @param page
      * @param limit
      * @returns UsersResponse
-     *
      */
     async getUsers(page: number, limit: number): Promise<UsersResponse> {
         const skipCount = page * limit
@@ -70,7 +69,6 @@ export class UsersService {
      *
      * @param userNickname
      * @returns User
-     *
      */
     async getUserByNickname(userNickname: string): Promise<User> {
         const user = await this._find({ nickname: userNickname })
@@ -95,7 +93,6 @@ export class UsersService {
      *
      * @param userNickname
      * @returns User
-     *
      */
     async getUserByEmail(userEmail: string): Promise<UsersEntity> {
         const user = await this._find({ email: userEmail })
@@ -111,7 +108,6 @@ export class UsersService {
      *
      * @param userId
      * @returns UsersEntity
-     *
      */
     async getUserById(userId: string): Promise<UsersEntity> {
         const user = await this._find({ id: userId })
@@ -128,7 +124,6 @@ export class UsersService {
      * @param userId
      * @param data
      * @returns boolean
-     *
      */
     async createUser(data: CreateUser): Promise<void> {
         const user = await this._find({ email: data.email })
@@ -156,7 +151,6 @@ export class UsersService {
      * @param userId
      * @param data
      * @returns UpdateUser
-     *
      */
     async updateUser(userId: string, data: UpdateUser): Promise<UpdateUser> {
         const user = await this._find({ id: userId })

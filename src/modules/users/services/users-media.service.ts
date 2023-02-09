@@ -61,6 +61,13 @@ export class UsersMediaService {
         }
     }
 
+    /**
+     *
+     * @param userId
+     * @param type
+     * @param file
+     * @returns ImgFile
+     */
     private async _save(
         userId: string,
         type: FileTypesEnum,
@@ -106,6 +113,13 @@ export class UsersMediaService {
         }
     }
 
+    /**
+     *
+     * @param userId
+     * @param type
+     * @param fileId
+     * @param format
+     */
     private async _delete(
         userId: string,
         type: FileTypesEnum,
