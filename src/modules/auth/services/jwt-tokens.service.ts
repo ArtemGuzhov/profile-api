@@ -15,6 +15,12 @@ export class JwtTokensService {
         private readonly _jwtService: JwtService,
     ) {}
 
+    /**
+     *
+     * @param id
+     * @param refreshToken
+     * @returns Tokens
+     */
     async refreshTokens(id: string, refreshToken: string): Promise<Tokens> {
         const user = await this._usersService.getUserById(id)
 
@@ -32,6 +38,11 @@ export class JwtTokensService {
         return tokens
     }
 
+    /**
+     *
+     * @param id
+     * @param refreshToken
+     */
     async updateRefreshTokenHash(
         id: string,
         refreshToken: string,
@@ -43,6 +54,11 @@ export class JwtTokensService {
         })
     }
 
+    /**
+     *
+     * @param id
+     * @returns Tokens
+     */
     async getTokens(id: string): Promise<Tokens> {
         const jwtPayload: Pick<JwtPayload, 'id'> = {
             id,

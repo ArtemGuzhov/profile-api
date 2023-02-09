@@ -12,6 +12,12 @@ export class AuthService {
         private readonly _jwtTokensService: JwtTokensService,
     ) {}
 
+    /**
+     *
+     * @param email
+     * @param password
+     * @returns Tokens
+     */
     async auth(email: string, password: string): Promise<Tokens> {
         const user = await this._usersService.getUserByEmail(email)
 
@@ -30,6 +36,10 @@ export class AuthService {
         return tokens
     }
 
+    /**
+     *
+     * @param userId
+     */
     async logout(userId: string): Promise<void> {
         await this._usersService.updateUser(userId, { refreshToken: null })
     }
