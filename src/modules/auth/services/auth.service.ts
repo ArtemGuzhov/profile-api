@@ -2,6 +2,7 @@ import { BadRequestException, Injectable } from '@nestjs/common'
 import { ErrorsMessagesEnum } from '../../../shared/enums/error-messages.enum'
 import { compareHashes } from '../../../shared/helpers/compare-hashes.helper'
 import { UsersService } from '../../users/services/users.service'
+import { AuthResponse } from './interfaces/auth-response.interface'
 import { Tokens } from './interfaces/tokens.interface'
 import { JwtTokensService } from './jwt-tokens.service'
 
@@ -18,8 +19,10 @@ export class AuthService {
      * @param password
      * @returns Tokens
      */
-    async auth(email: string, password: string): Promise<Tokens> {
-        const user = await this._usersService.getUserByEmail(email)
+    async auth(userEmail: string, password: string): Promise<AuthResponse> {
+        const user = await this._usersService.getUserByEmail(userEmail)
+
+        const { id, name, nickname, email, avatar, header } = user
 
         const isMatch = await compareHashes(password, user.password)
 
@@ -33,7 +36,10 @@ export class AuthService {
             tokens.refreshToken,
         )
 
-        return tokens
+        return {
+            user: { id, name, nickname, email, avatar, header },
+            tokens,
+        }
     }
 
     /**
