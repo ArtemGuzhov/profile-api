@@ -34,3 +34,16 @@ services:
     restart: always
     ports:
       - ${PSQL_PORT}:5432
+
+  profile-api-app:
+    container_name: profile-api-app
+    networks:
+      - profile-api
+    build:
+      context: ../.
+      dockerfile: Dockerfile
+    restart: on-failure
+    ports:
+      - ${PORT}:${PORT}
+    depends_on:
+      - postgres
