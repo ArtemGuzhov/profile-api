@@ -6,6 +6,7 @@ import { JwtTokensService } from '../services/jwt-tokens.service'
 import { userEntityMock } from '../../users/specs/mocks/user-entity.mock'
 import { tokensMock } from './mocks/tokens.mock'
 import { ErrorsMessagesEnum } from '../../../shared/enums/error-messages.enum'
+import { userMock } from '../../users/specs/mocks/user.mock'
 
 describe('AuthService', () => {
     let service: AuthService
@@ -48,7 +49,7 @@ describe('AuthService', () => {
                 'updateRefreshTokenHash',
             ).mockImplementation()
 
-            const tokens = await service.auth(email, password)
+            const authRes = await service.auth(email, password)
 
             expect(
                 service['_usersService'].getUserByEmail,
@@ -59,7 +60,10 @@ describe('AuthService', () => {
             expect(
                 service['_jwtTokensService'].updateRefreshTokenHash,
             ).toHaveBeenCalledTimes(1)
-            expect(tokens).toEqual(tokensMock)
+            expect(authRes).toEqual({
+                user: userMock,
+                tokens: tokensMock,
+            })
         })
 
         it('throw USER_NOT_FOUND error', async () => {

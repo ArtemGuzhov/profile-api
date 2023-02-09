@@ -5,6 +5,7 @@ import { AuthService } from '../services/auth.service'
 import { tokensMock } from './mocks/tokens.mock'
 import { userEntityMock } from '../../users/specs/mocks/user-entity.mock'
 import { JwtTokensService } from '../services/jwt-tokens.service'
+import { userMock } from '../../users/specs/mocks/user.mock'
 
 describe('AuthControllerV1', () => {
     let controller: AuthControllerV1
@@ -36,12 +37,18 @@ describe('AuthControllerV1', () => {
         const userPayloadMock = { email: 'email@g.com', password: 'pass' }
 
         it('should return tokens', async () => {
-            jest.spyOn(authService, 'auth').mockResolvedValue(tokensMock)
+            jest.spyOn(authService, 'auth').mockResolvedValue({
+                user: userMock,
+                tokens: tokensMock,
+            })
 
-            const tokens = await controller.auth(userPayloadMock)
+            const authRes = await controller.auth(userPayloadMock)
 
             expect(authService.auth).toHaveBeenCalledTimes(1)
-            expect(tokens).toEqual(tokensMock)
+            expect(authRes).toEqual({
+                user: userMock,
+                tokens: tokensMock,
+            })
         })
     })
 
@@ -60,14 +67,18 @@ describe('AuthControllerV1', () => {
             const { id } = userEntityMock
             const refreshToken = 'refreshToken'
 
-            jest.spyOn(jwtTokensService, 'refreshTokens').mockResolvedValue(
-                tokensMock,
-            )
+            jest.spyOn(jwtTokensService, 'refreshTokens').mockResolvedValue({
+                user: userMock,
+                tokens: tokensMock,
+            })
 
-            const tokens = await controller.refreshTokens(id, refreshToken)
+            const authRes = await controller.refreshTokens(id, refreshToken)
 
             expect(jwtTokensService.refreshTokens).toHaveBeenCalledTimes(1)
-            expect(tokens).toEqual(tokensMock)
+            expect(authRes).toEqual({
+                user: userMock,
+                tokens: tokensMock,
+            })
         })
     })
 })
